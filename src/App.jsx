@@ -5,6 +5,8 @@ import Container from "react-bootstrap/esm/Container";
 import HomePage from "./pages/HomePage";
 import Navigation from "./pages/partials/Navigation";
 import LoginPage from "./pages/LoginPage";
+import SignupPage from "./pages/SignupPage";
+import LogoutPage from "./pages/LogoutPage";
 
 function App() {
 	return (
@@ -14,6 +16,8 @@ function App() {
 				<Routes>
 					<Route path="/" element={<HomePage />} />
 					<Route path="/login" element={<LoginPage />} />
+					<Route path="/signup" element={<SignupPage />} />
+					<Route path="/logout" element={<LogoutPage />} />
 				</Routes>
 				<ReactQueryDevtools
 					initialIsOpen={false}

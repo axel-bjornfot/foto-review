@@ -4,15 +4,18 @@ import { BrowserRouter } from "react-router-dom";
 import { QueryClient, QueryClientProvider } from "react-query";
 import App from "./App";
 import "./assets/scss/App.scss";
+import AuthContext from "./contexts/AuthContext";
 
 const queryClient = new QueryClient();
 
 ReactDOM.render(
 	<React.StrictMode>
 		<QueryClientProvider client={queryClient}>
-			<BrowserRouter>
-				<App />
-			</BrowserRouter>
+			<AuthContext>
+				<BrowserRouter>
+					<App />
+				</BrowserRouter>
+			</AuthContext>
 		</QueryClientProvider>
 	</React.StrictMode>,
 	document.getElementById("root")
