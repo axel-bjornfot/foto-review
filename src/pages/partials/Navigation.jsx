@@ -19,6 +19,14 @@ const Navigation = () => {
 						</NavLink>
 						{currentUser ? (
 							<>
+								<NavLink to="/albums" className="nav-link">
+									albums
+								</NavLink>
+								<NavLink
+									to="/create-album"
+									className="nav-link">
+									create album
+								</NavLink>
 								<NavLink to="/logout" className="nav-link">
 									logout
 								</NavLink>

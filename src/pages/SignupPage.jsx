@@ -1,4 +1,6 @@
 import React, { useRef, useState } from "react";
+import { collection, addDoc } from "firebase/firestore";
+import { db } from "../firebase";
 import Container from "react-bootstrap/Container";
 import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
@@ -6,6 +8,8 @@ import { useAuthContext } from "../contexts/AuthContext";
 import { useNavigate } from "react-router-dom";
 
 const SignupPage = () => {
+	const firstnameRef = useRef();
+	const lastnameRef = useRef();
 	const emailRef = useRef();
 	const passwordRef = useRef();
 	const secPasswordRef = useRef();
@@ -23,18 +27,49 @@ const SignupPage = () => {
 		setError(null);
 
 		try {
-			await signup(emailRef.current.value, passwordRef.current.value);
+			const res = await signup(
+				emailRef.current.value,
+				passwordRef.current.value
+			);
+			const user = res.user;
+			//create a user doc with the auth user
+			await addDoc(collection(db, "users"), {
+				uid: user.uid,
+				authProvider: "local",
+				email: emailRef.current.value,
+				firstname: firstnameRef.current.value,
+				lastname: lastnameRef.current.value,
+			});
 			navigate("/");
 		} catch (e) {
 			setError(e.message);
 		}
 	};
 
+	//
+
 	return (
 		<Container>
 			<h1>SignupPage</h1>
-			{error && <h4 variant="danger">{error}</h4>}
+			{error && <h4>{error}</h4>}
+
 			<Form onSubmit={handleSignup}>
+				<Form.Group className="mb-3">
+					<Form.Label>Firstname</Form.Label>
+					<Form.Control
+						type="text"
+						ref={firstnameRef}
+						placeholder="Firstname"
+					/>
+				</Form.Group>
+				<Form.Group className="mb-3">
+					<Form.Label>Lastname</Form.Label>
+					<Form.Control
+						type="text"
+						ref={lastnameRef}
+						placeholder="Lastname"
+					/>
+				</Form.Group>
 				<Form.Group className="mb-3" controlId="formGroupEmail">
 					<Form.Label>Email address</Form.Label>
 					<Form.Control

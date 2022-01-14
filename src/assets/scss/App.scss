@@ -5,3 +5,40 @@
 	background-color: #fffff2;
 	min-height: 100vh;
 }
+
+#dropzone-wrapper {
+	border: 2px dashed rgb(182, 175, 175);
+	border-radius: 4px;
+	background-color: #e7e4c6;
+	text-align: center;
+	margin-top: 1rem;
+	margin-bottom: 1rem;
+	padding: 2rem;
+
+	.indicator {
+		font-size: 4rem;
+		p {
+			margin-bottom: 0;
+		}
+	}
+
+	.progress {
+		font-size: 1rem;
+		height: 1.5rem;
+	}
+}
+
+.grid-row {
+	width: 80vw;
+}
+
+.gen-link {
+	color: rgb(67, 146, 199);
+}
+
+.link-div {
+	margin-top: 2rem;
+	border: solid 1px black;
+	background-color: beige;
+	width: 100%;
+}
