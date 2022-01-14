@@ -1,45 +1,71 @@
-import { useState } from 'react'
-import logo from './logo.svg'
-import './App.css'
+import React from "react";
+import { Route, Routes } from "react-router-dom";
+import { ReactQueryDevtools } from "react-query/devtools";
+import Container from "react-bootstrap/esm/Container";
+import HomePage from "./pages/HomePage";
+import Navigation from "./pages/partials/Navigation";
+import LoginPage from "./pages/LoginPage";
+import SignupPage from "./pages/SignupPage";
+import LogoutPage from "./pages/LogoutPage";
+import MyAlbumsPage from "./pages/MyAlbumsPage";
+import RequireAuth from "./components/RequireAuth";
+import AlbumPage from "./pages/AlbumPage";
+import CreateAlbumPage from "./pages/CreateAlbumPage";
+import ReviewPage from "./pages/ReviewPage";
+import ReviewDonePage from "./pages/ReviewDonePage";
 
 function App() {
-  const [count, setCount] = useState(0)
+	return (
+		<>
+			<Navigation />
+			<Container className="py-4 align-items-center">
+				<Routes>
+					<Route path="/" element={<HomePage />} />
+					<Route path="/login" element={<LoginPage />} />
+					<Route path="/signup" element={<SignupPage />} />
+					<Route path="/logout" element={<LogoutPage />} />
+					<Route
+						path="/album/:id/review/:user"
+						element={<ReviewPage />}
+					/>
+					<Route
+						path="/review-done/:id/:user"
+						element={<ReviewDonePage />}
+					/>
+					<Route
+						path="/albums"
+						element={
+							<RequireAuth>
+								<MyAlbumsPage />
+							</RequireAuth>
+						}
+					/>
 
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>Hello Vite + React!</p>
-        <p>
-          <button type="button" onClick={() => setCount((count) => count + 1)}>
-            count is: {count}
-          </button>
-        </p>
-        <p>
-          Edit <code>App.jsx</code> and save to test HMR updates.
-        </p>
-        <p>
-          <a
-            className="App-link"
-            href="https://reactjs.org"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Learn React
-          </a>
-          {' | '}
-          <a
-            className="App-link"
-            href="https://vitejs.dev/guide/features.html"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Vite Docs
-          </a>
-        </p>
-      </header>
-    </div>
-  )
+					<Route
+						path="/album/:id"
+						element={
+							<RequireAuth redirectTo="/login">
+								<AlbumPage />
+							</RequireAuth>
+						}
+					/>
+					<Route
+						path="/create-album"
+						element={
+							<RequireAuth redirectTo="/login">
+								<CreateAlbumPage />
+							</RequireAuth>
+						}
+					/>
+				</Routes>
+
+				<ReactQueryDevtools
+					initialIsOpen={false}
+					position="bottom-right"
+				/>
+			</Container>
+		</>
+	);
 }
 
-export default App
+export default App;
