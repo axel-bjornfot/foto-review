@@ -7,8 +7,7 @@ const HomePage = () => {
 		<Container>
 			<h1>HomePage</h1>
 			<p className="h5">
-				Upload images and send to people to review and creaate new
-				albums{" "}
+				Upload images and send to people to review and create new albums{" "}
 			</p>
 		</Container>
 	);
