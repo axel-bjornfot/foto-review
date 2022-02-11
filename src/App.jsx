@@ -25,11 +25,11 @@ function App() {
 					<Route path="/signup" element={<SignupPage />} />
 					<Route path="/logout" element={<LogoutPage />} />
 					<Route
-						path="/album/:id/review/:user"
+						path="/album/:id/:name/review/:user"
 						element={<ReviewPage />}
 					/>
 					<Route
-						path="/review-done/:id/:user"
+						path="/review-done/:id/:user/:name"
 						element={<ReviewDonePage />}
 					/>
 					<Route
@@ -42,7 +42,7 @@ function App() {
 					/>
 
 					<Route
-						path="/album/:id"
+						path="/album/:id/"
 						element={
 							<RequireAuth redirectTo="/login">
 								<AlbumPage />

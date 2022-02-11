@@ -45,6 +45,7 @@ const CreateAlbum = (data) => {
 			console.error("Error adding document: ", e);
 			return;
 		}
+		albumNameRef.current.value = "";
 	};
 
 	return (

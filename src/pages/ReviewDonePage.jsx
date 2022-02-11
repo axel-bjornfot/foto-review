@@ -12,11 +12,12 @@ import useAddAlbumToImg from "../hooks/useAddAlbumToImg";
 import { useParams } from "react-router-dom";
 import Button from "react-bootstrap/Button";
 
-const ReviewPage = () => {
+const ReviewDonePage = () => {
 	const addAlbumToImages = useAddAlbumToImg();
 	const params = useParams();
 	const albumId = params.id;
 	const userId = params.user;
+	const albumName = params.name;
 
 	const imgToAddRef = query(
 		collection(db, "images"),
@@ -39,7 +40,7 @@ const ReviewPage = () => {
 	const createAlbum = async () => {
 		try {
 			await addDoc(collection(db, "albums"), {
-				title: "reviewed",
+				title: `reviewed ${albumName}`,
 				timestamp: serverTimestamp(),
 				owner: userId,
 			}).then(function (docRef) {
@@ -57,7 +58,7 @@ const ReviewPage = () => {
 		}
 	};
 
-	console.log("iimg q:", imgQuery.data);
+	console.log("img q:", imgQuery.data);
 	return (
 		<>
 			<Button onClick={createAlbum}>Send review</Button>
@@ -66,4 +67,4 @@ const ReviewPage = () => {
 	);
 };
 
-export default ReviewPage;
+export default ReviewDonePage;

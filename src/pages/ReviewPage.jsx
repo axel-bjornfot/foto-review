@@ -23,6 +23,7 @@ const ReviewPage = () => {
 	const navigate = useNavigate();
 	const albumId = params.id;
 	const userId = params.user;
+	const albumName = params.name;
 
 	//get images
 	const imgRef = query(
@@ -43,7 +44,7 @@ const ReviewPage = () => {
 
 	const handdleSubmit = (e) => {
 		e.preventDefault();
-		navigate(`/review-done/${albumId}/${userId}`);
+		navigate(`/review-done/${albumId}/${userId}/${albumName}`);
 	};
 	return (
 		<>

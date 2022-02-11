@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from "react";
+import React, { useCallback, useState, useRef, useEffect } from "react";
 import { useParams, Link } from "react-router-dom";
 import Container from "react-bootstrap/Container";
 import Alert from "react-bootstrap/Alert";
@@ -6,9 +6,17 @@ import ProgressBar from "react-bootstrap/ProgressBar";
 import Col from "react-bootstrap/Col";
 import Row from "react-bootstrap/Row";
 import Card from "react-bootstrap/Card";
+import Form from "react-bootstrap/Form";
 
 import { useFirestoreQueryData } from "@react-query-firebase/firestore";
-import { collection, where, query } from "firebase/firestore";
+import {
+	collection,
+	where,
+	query,
+	doc,
+	updateDoc,
+	onSnapshot,
+} from "firebase/firestore";
 import { db } from "../firebase";
 import { useAuthContext } from "../contexts/AuthContext";
 
@@ -21,13 +29,40 @@ const AlbumPage = () => {
 	const upload = useUpload();
 	const [genLink, setGenLink] = useState("");
 	const { currentUser } = useAuthContext();
-	const params = useParams();
-	const albumId = params.id;
+	const { id } = useParams();
+	const [data, setData] = useState();
+	const albumNameRef = useRef();
 
+	//get albums from db
+	const albumRef = doc(db, "albums", id);
+
+	useEffect(() => {
+		const unsubscribe = onSnapshot(albumRef, (snapshot) => {
+			if (!snapshot.exists()) {
+				setData(false);
+				return;
+			}
+			setData(snapshot.data());
+		});
+		return unsubscribe;
+	}, []);
+
+	const updateAlbumName = async (e) => {
+		e.preventDefault();
+		if (!albumNameRef.current.value.length) {
+			return;
+		}
+		console.log(albumNameRef.current.value);
+		await updateDoc(albumRef, {
+			title: albumNameRef.current.value,
+		});
+	};
+
+	console.log("albumref: ", albumRef);
 	//get images in album from db
 	const imgRef = query(
 		collection(db, "images"),
-		where("album", "array-contains", albumId)
+		where("album", "array-contains", id)
 	);
 	const imgQuery = useFirestoreQueryData(
 		["images"],
@@ -132,6 +167,18 @@ const AlbumPage = () => {
 					</div>
 				</Row>
 			</Col>
+			<h1>{data.title}</h1>
+			<Form onSubmit={updateAlbumName}>
+				<Form.Group className="mb-3" controlId="formGroupAlbumName">
+					<Form.Control
+						type="text"
+						ref={albumNameRef}
+						placeholder="edit album name"
+						required
+					/>
+				</Form.Group>
+				<Button type="submit">Edit</Button>
+			</Form>
 			<ImgGrid query={imgQuery.data} />
 		</Container>
 	);
