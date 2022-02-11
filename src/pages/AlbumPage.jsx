@@ -167,7 +167,7 @@ const AlbumPage = () => {
 					</div>
 				</Row>
 			</Col>
-			<h1>{data.title}</h1>
+			{data && <h1>{data.title}</h1>}
 			<Form onSubmit={updateAlbumName}>
 				<Form.Group className="mb-3" controlId="formGroupAlbumName">
 					<Form.Control
